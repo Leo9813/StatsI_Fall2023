@@ -1,0 +1,486 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{graphicx,textcomp}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage[reqno]{amsmath}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{endnotes}
+\usepackage{lscape}
+\newtheorem{com}{Comment}
+\usepackage{float}
+\usepackage{hyperref}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+\usepackage[compact]{titlesec}
+\usepackage{dcolumn}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{multirow}
+\usepackage{xcolor}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\definecolor{light-gray}{gray}{0.65}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+\newcommand{\Sref}[1]{Section~\ref{#1}}
+\newtheorem{hyp}{Hypothesis}
+
+\title{Problem Set 3}
+\date{Due: November 19, 2022}
+\author{Applied Stats/Quant Methods 1}
+
+
+\begin{document}
+	\maketitle
+	\section*{Instructions}
+	\begin{itemize}
+		\item Please show your work! You may lose points by simply writing in the answer. If the problem requires you to execute commands in \texttt{R}, please include the code you used to get your answers. Please also include the \texttt{.R} file that contains your code. If you are not sure if work needs to be shown for a particular problem, please ask.
+	\item Your homework should be submitted electronically on GitHub.
+	\item This problem set is due before 23:59 on Sunday November 19, 2023. No late assignments will be accepted.
+
+	\end{itemize}
+
+		\vspace{.25cm}
+	
+\noindent In this problem set, you will run several regressions and create an add variable plot (see the lecture slides) in \texttt{R} using the \texttt{incumbents\_subset.csv} dataset. Include all of your code.
+
+	\vspace{.5cm}
+\section*{Question 1}
+\vspace{.25cm}
+\noindent We are interested in knowing how the difference in campaign spending between incumbent and challenger affects the incumbent's vote share. 
+	\begin{enumerate}
+		\item Run a regression where the outcome variable is \texttt{voteshare} and the explanatory variable is \texttt{difflog}.\\
+		
+		\vspace{.15cm}
+        \lstinputlisting[language=R, firstline=39, lastline=41]{PS3_Jie_Yu.R}
+
+		\vspace{.15cm}
+		
+		\begin{footnotesize}
+			
+			\begin{verbatim}
+			Call:
+			lm(formula = voteshare ~ difflog, data = inc.sub)
+			
+			Residuals:
+			Min       1Q   Median       3Q      Max 
+			-0.26832 -0.05345 -0.00377  0.04780  0.32749 
+			
+			Coefficients:
+			Estimate Std. Error t value Pr(>|t|)    
+			(Intercept) 0.579031   0.002251  257.19   <2e-16 ***
+			difflog     0.041666   0.000968   43.04   <2e-16 ***
+			---
+			Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+			
+			Residual standard error: 0.07867 on 3191 degrees of freedom
+			Multiple R-squared:  0.3673,	Adjusted R-squared:  0.3671 
+			F-statistic:  1853 on 1 and 3191 DF,  p-value: < 2.2e-16
+			
+			According to the results, the F statistic is 1853, 
+			the degrees of freedom are 1 and 3191,
+			and the p-value is less than 2.2e-16,
+			indicating that the overall model is highly significant 
+			and we have high confidence to reject the null hypothesis.
+		
+			\end{verbatim}
+		\end{footnotesize}
+		\noindent 
+		\item Make a scatterplot of the two variables and add the regression line. 		
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=44, lastline=52]{PS3_Jie_Yu.R} 
+		\vspace{.15cm}
+		\begin{figure}[h!]\centering
+			
+			\caption{\footnotesize Scatterplot of relationship between \texttt{voteshare}  and  \texttt{difflog}.}
+			\label{fig:Rplot_1}
+			\includegraphics[width=.85\textwidth]{Rplot_1.pdf}
+		\end{figure}
+	\begin{footnotesize}
+		\begin{verbatim}
+			According to the results, the linear correlation is positive, 
+			indicating that as campaign spending increases, 
+			the incumbent's vote share tends to increase.
+			Moreover, the dotted plots are concentrated on both sides of the linear plot, 
+			indicating that there is a strong linear relationship.
+			\end{verbatim}
+	\end{footnotesize}
+		\vspace{80.15cm}
+		\item Save the residuals of the model in a separate object.
+		
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=56, lastline=59]{PS3_Jie_Yu.R} 
+		\vspace{.15cm}
+	\begin{footnotesize}
+		\begin{verbatim} 
+		Save the residuals in a separate object:
+		Named num [1:3193] -0.000423 -0.031684 -0.004551 0.038669 0.035529 ...
+		- attr(*, "names")= chr [1:3193] "1" "2" "3" "4" ...
+		Length  Class   Mode 
+		0   NULL   NULL 
+		\end{verbatim}
+	\end{footnotesize}
+		\item Write the prediction equation.
+		
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=63, lastline=68]{PS3_Jie_Yu.R} 
+		\vspace{.15cm}
+		\vspace{.15cm}
+	\begin{footnotesize}
+		\begin{verbatim}
+	  Final Model: votehare= 0.579 + 0.0417 * difflog
+	  
+	  According results,
+	  For each one-unit increase in difflog, 
+	  we expect voteshare to increase by approximately 0.0417, 
+	  assuming all other factors remain constant. 
+	  The intercept of 0.579 represents the estimated voteshare when difflog is zero.
+			\end{verbatim}
+	\end{footnotesize}
+	\end{enumerate}
+	
+\vspace{.5cm}
+
+\section*{Question 2}
+\noindent We are interested in knowing how the difference between incumbent and challenger's spending and the vote share of the presidential candidate of the incumbent's party are related.	\vspace{.25cm}
+	\begin{enumerate}
+		\item Run a regression where the outcome variable is \texttt{presvote} and the explanatory variable is \texttt{difflog}.	
+		
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=75, lastline=77]{PS3_Jie_Yu.R} 
+		\vspace{.15cm}
+	\begin{footnotesize}
+		\begin{verbatim} 
+	Call:
+	lm(formula = presvote ~ difflog, data = inc.sub)
+	
+	Residuals:
+	Min       1Q   Median       3Q      Max 
+	-0.32196 -0.07407 -0.00102  0.07151  0.42743 
+	
+	Coefficients:
+	Estimate Std. Error t value Pr(>|t|)    
+	(Intercept) 0.507583   0.003161  160.60   <2e-16 ***
+	difflog     0.023837   0.001359   17.54   <2e-16 ***
+	---
+	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+	
+	Residual standard error: 0.1104 on 3191 degrees of freedom
+	Multiple R-squared:  0.08795,	Adjusted R-squared:  0.08767 
+	F-statistic: 307.7 on 1 and 3191 DF,  p-value: < 2.2e-16
+	
+	According to the results, the F statistic is 307.7, 
+	the degrees of freedom are 1 and 3191, 
+	and the p-value is less than 2.2e-16, 
+	indicating that the overall model is highly significant 
+	and has high confidence to reject the null hypothesis.
+	
+			\end{verbatim}
+	\end{footnotesize}
+		\vspace{.15cm}
+		\item Make a scatterplot of the two variables and add the regression line. 	
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=80, lastline=88]{PS3_Jie_Yu.R} 
+		\vspace{.15cm}
+		\begin{figure}[h!]\centering
+			
+			\caption{\footnotesize Scatterplot of relationship between \texttt{presvote}and \texttt{difflog}.}
+			\label{fig:Rplot_2}
+			\includegraphics[width=.85\textwidth]{Rplot_2.pdf}
+		\end{figure}
+		\begin{footnotesize}
+			\begin{verbatim} 
+			According to the results, the linear correlation is positive, 
+			indicating that campaign spending increases, 
+			the presvote tends to increase.
+			Moreover, the dotted plots are concentrated on both sides of the linear plot, 
+			indicating that there is a strong linear relationship.
+		\end{verbatim}
+	\end{footnotesize}
+		
+		\item Save the residuals of the model in a separate object.	
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=91, lastline=94]{PS3_Jie_Yu.R} 
+	 \begin{footnotesize}
+		 \begin{verbatim} 
+		 	Named num [1:3193] 0.00561 0.03758 -0.05313 -0.05299 -0.04584 ...
+		 	- attr(*, "names")= chr [1:3193] "1" "2" "3" "4" ...
+		 	Length  Class   Mode 
+		 	0   NULL   NULL
+	          
+     	 \end{verbatim}
+      \end{footnotesize}
+		\item Write the prediction equation.
+		
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=97, lastline=102]{PS3_Jie_Yu.R} 
+		\vspace{.15cm}
+		\begin{footnotesize}
+			\begin{verbatim}  
+		Final Model: presvote= 0.5076 + 0.0238 * difflog
+	    
+		Based on the results, for each unit increase in the difflog variable,
+		we expect the pre-voting to increase by approximately 0.0238.
+		The intercept of 0.5076 represents the estimated baseline value of presvote 
+		when there is no change in the difflog variable.
+        	\end{verbatim}
+        \end{footnotesize}
+	\end{enumerate}
+	
+\vspace{.5cm}
+\section*{Question 3}
+
+\noindent We are interested in knowing how the vote share of the presidential candidate of the incumbent's party is associated with the incumbent's electoral success.
+	\vspace{.25cm}
+	\begin{enumerate}
+		\item Run a regression where the outcome variable is \texttt{voteshare} and the explanatory variable is \texttt{presvote}.
+			
+			\vspace{.15cm}
+			\lstinputlisting[language=R, firstline=106, lastline=108]{PS3_Jie_Yu.R}
+			\begin{footnotesize}
+				\begin{verbatim}
+					Call:
+					lm(formula = voteshare ~ presvote, data = inc.sub)
+					
+					Residuals:
+					Min       1Q   Median       3Q      Max 
+					-0.27330 -0.05888  0.00394  0.06148  0.41365 
+					
+					Coefficients:
+					Estimate Std. Error t value Pr(>|t|)    
+					(Intercept) 0.441330   0.007599   58.08   <2e-16 ***
+					presvote    0.388018   0.013493   28.76   <2e-16 ***
+					---
+					Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+					
+					Residual standard error: 0.08815 on 3191 degrees of freedom
+					Multiple R-squared:  0.2058,	Adjusted R-squared:  0.2056 
+					F-statistic:   827 on 1 and 3191 DF,  p-value: < 2.2e-16
+			\end{verbatim}
+		\end{footnotesize}
+		
+		\item Make a scatterplot of the two variables and add the regression line. 
+		
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=111, lastline=119]{PS3_Jie_Yu.R}
+		\vspace{.15cm}
+		\begin{figure}[h!]\centering
+			
+			\caption{\footnotesize Scatterplot of relationship between \texttt{voteshare} and \texttt{presvote}.}
+			\label{fig:Rplot_3}
+			\includegraphics[width=.85\textwidth]{Rplot_3.pdf}
+		\end{figure}
+		\begin{footnotesize}
+			\begin{verbatim}
+			According to the results, the linear correlation is positive, 
+			indicating that campaign spending increases, 
+			the presvote tends to increase.
+			Moreover, the dotted plots are concentrated on both sides of the linear plot, 
+			indicating that there is a strong linear relationship.	
+				
+			\end{verbatim}
+	\end{footnotesize}		
+		
+		\item Write the prediction equation.
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=122, lastline=127]{PS3_Jie_Yu.R} 
+		\begin{footnotesize}
+			\begin{verbatim}
+				Final Model: voteshare = 0.4413 + 0.388 * presvote
+				
+				For each unit increase in the prevote variable, 
+				we expect the vote share to increase by approximately 0.388. 
+				The intercept 0.4413 represents the estimated baseline value of vote share
+				without the influence of pre-voting variables.
+				
+		     \end{verbatim}
+	    \end{footnotesize}	
+	
+		
+	\end{enumerate}
+	
+
+\vspace{.5cm}
+\section*{Question 4}
+\noindent The residuals from part (a) tell us how much of the variation in \texttt{voteshare} is $not$ explained by the difference in spending between incumbent and challenger. The residuals in part (b) tell us how much of the variation in \texttt{presvote} is $not$ explained by the difference in spending between incumbent and challenger in the district.
+	\begin{enumerate}
+		\item Run a regression where the outcome variable is the residuals from Question 1 and the explanatory variable is the residuals from Question 2.	
+	
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=132, lastline=134]{PS3_Jie_Yu.R} 
+		\vspace{.15cm}
+		\begin{footnotesize}
+			\begin{verbatim}
+			Call:
+			lm(formula = res_1 ~ res_2, data = inc.sub)
+			
+			Residuals:
+			Min       1Q   Median       3Q      Max 
+			-0.25928 -0.04737 -0.00121  0.04618  0.33126 
+			
+			Coefficients:
+			Estimate Std. Error t value Pr(>|t|)    
+			(Intercept) -5.934e-18  1.299e-03    0.00        1    
+			res_2        2.569e-01  1.176e-02   21.84   <2e-16 ***
+			---
+			Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+			
+			Residual standard error: 0.07338 on 3191 degrees of freedom
+			Multiple R-squared:   0.13,	Adjusted R-squared:  0.1298 
+			F-statistic:   477 on 1 and 3191 DF,  p-value: < 2.2e-16
+			
+			According to the results, the F statistic is 477, 
+			the degrees of freedom are 1 and 3191,
+			and the p value is less than 2.2e-16, 
+			indicating a high degree of confidence in rejecting the null hypothesis.
+			In summary, the model suggests that there is a 
+			statistically significant relationship between res_1 and res_2. 
+			The F-statistic and its associated p-value support 
+			the overall significance of the model. 
+			The coefficient for res_2 is also significant, 
+			suggesting that it has a meaningful impact on the dependent variable 
+				\end{verbatim}
+			\end{footnotesize}	
+		\item Make a scatterplot of the two residuals and add the regression line. 	
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=137, lastline=145]{PS3_Jie_Yu.R} 
+		\vspace{.15cm}
+		\begin{figure}[h!]\centering
+			
+			\caption{\footnotesize Scatterplot of relationship between \texttt{residuals\textunderscore1} and \texttt{residuals\textunderscore2}.}
+			\label{fig:Rplot_4}
+			\includegraphics[width=.85\textwidth]{Rplot_4.pdf}
+			
+		\end{figure}
+		\newpage
+		\item Write the prediction equation.
+		
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=149, lastline=154]{PS3_Jie_Yu.R} 
+		\vspace{.15cm}
+		\begin{footnotesize}
+			\begin{verbatim}
+				Final Model: res_1= 0 + 0.2569 * res_2
+			\end{verbatim}
+		\end{footnotesize}	
+		
+	\end{enumerate}
+	
+\vspace{.5cm}
+
+\section*{Question 5}
+\noindent What if the incumbent's vote share is affected by both the president's popularity and the difference in spending between incumbent and challenger? 
+	\begin{enumerate}
+		\item Run a regression where the outcome variable is the incumbent's \texttt{voteshare} and the explanatory variables are \texttt{difflog} and \texttt{presvote}.
+		
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=158, lastline=160]{PS3_Jie_Yu.R}
+		\vspace{.15cm}
+			\begin{footnotesize}
+			\begin{verbatim}
+				Call:
+				lm(formula = voteshare ~ difflog + presvote, data = inc.sub)
+				
+				Residuals:
+				Min       1Q   Median       3Q      Max 
+				-0.25928 -0.04737 -0.00121  0.04618  0.33126 
+				
+				Coefficients:
+				Estimate Std. Error t value Pr(>|t|)    
+				(Intercept) 0.4486442  0.0063297   70.88   <2e-16 ***
+				difflog     0.0355431  0.0009455   37.59   <2e-16 ***
+				presvote    0.2568770  0.0117637   21.84   <2e-16 ***
+				---
+				Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+				
+				Residual standard error: 0.07339 on 3190 degrees of freedom
+				Multiple R-squared:  0.4496,	Adjusted R-squared:  0.4493 
+				F-statistic:  1303 on 2 and 3190 DF,  p-value: < 2.2e-16
+				
+				According to the results, the F statistic is 1303, 
+				the degrees of freedom are 2 and 3190, 
+				and the p-value is less than 2.2e-16, 
+				indicating that there is greater credibility to reject the null hypothesis.
+				In summary, the model suggests a significant relationship 
+				between voteshare, difflog, and presvote. 
+				The R-squared values indicate that the model explains 
+				a substantial proportion of the variance in voteshare.
+			\end{verbatim}
+		\end{footnotesize}	
+		\item Write the prediction equation.	
+		\vspace{.15cm}
+		\lstinputlisting[language=R, firstline=163, lastline=170]{PS3_Jie_Yu.R}
+		\vspace{.15cm}
+		\begin{footnotesize}
+			\begin{verbatim}
+				Final Model: votehare= 0.4486 + 0.0355 * difflog + 0.2569 * presvote
+			\end{verbatim}
+		\end{footnotesize}	
+		
+		\item What is it in this output that is identical to the output in Question 4? Why do you think this is the case?
+		\begin{footnotesize}
+			\begin{verbatim}
+				In both instances, the coefficient for the variable of interest
+				 (presvote in Question 4 and residuals2 in the recent regression) 
+				 coincidentally appears to be approximately 0.2569. 
+				 The associated t-values are both 21.84, 
+				 and both exhibit highly significant p-values (<2e-16).
+				 This similarity might be a statistical coincidence or could suggest 
+				 that the variable residuals2 has a comparable impact 
+				 on the dependent variable (voteshare in Question 4 and residuals1 in the recent regression).
+				 While investigating further, it is essential to consider
+				 whether there is a theoretical or logical explanation 
+				 for this observed similarity. 
+				 Additionally, careful scrutiny of the model setup 
+				 and data appropriateness is crucial. If the relationship 
+				 between residuals2 and the dependent variable 
+				 is unexpected from a theoretical standpoint, 
+				 it may warrant a closer examination to ensure 
+				 the robustness of the analysis and rule out potential data issues.
+			\end{verbatim}
+	     \end{footnotesize}
+		\vspace{.15cm}
+		\noindent
+		\vspace{.15cm}
+		
+	\end{enumerate}
+
+
+
+
+\end{document}
