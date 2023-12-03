@@ -57,7 +57,7 @@ df_na <- df[complete.cases(df), ]
 rownames(df_na) <- 1:nrow(df_na) 
 
 # Final model
-model_final <- lm(euftf_re~edlvdie + 
+model_final <- lm(euftf_re~eduyrs + 
                            hinctnta + 
                            trstplt + 
                            imwbcnt + 
@@ -94,13 +94,13 @@ which(sort(cooks_d, decreasing=TRUE)>thres)
 # Investigate case by case. Coding error? Omitted variables?
 
 # Subsetting data frames, df[row,column]
-df_na[263,c("euftf_re","edlvdie","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
+df_na[263,c("euftf_re","eduys","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
 model_final$fitted.values[263] # Predicted outcome
 
-df_na[650,c("euftf_re","edlvdie","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
+df_na[650,c("euftf_re","eduys","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
 model_final$fitted.values[650] # Predicted outcome
 
-df_na[871,c("euftf_re","edlvdie","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
+df_na[871,c("euftf_re","eduys","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
 model_final$fitted.values[871] # Predicted outcome
 
 ### Difference in betas ####
@@ -128,13 +128,13 @@ dfbeta[,c("imwbcnt")][which.max(abs(dfbeta[,c("imwbcnt")]))]
 # Investigate case by case. Coding error? Omitted variables?
 
 # Subsetting data frames, df[row,column]
-df_na[756,c("euftf_re","edlvdie","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
+df_na[756,c("euftf_re","eduys","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
 model_final$fitted.values[756] # Predicted outcome
 
-df_na[404,c("euftf_re","edlvdie","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
+df_na[404,c("euftf_re","eduys","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
 model_final$fitted.values[404] # Predicted outcome
 
-df_na[344,c("euftf_re","edlvdie","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
+df_na[344,c("euftf_re","eduys","hinctnta","trstplt","imwbcnt","gndr","agea","brncntr")]
 model_final$fitted.values[344] # Predicted outcome
 
 ### Leverage versus residual plot ###
@@ -145,6 +145,7 @@ model_final$fitted.values[344] # Predicted outcome
 
 # Plot 
 plot(model_final, which=5)
+
 
 # What to do now?
 # Investigate case by case. Coding error? Omitted variables?
@@ -159,6 +160,7 @@ hist(model_final$residuals)
 
 # QQ (Quantile-quantile) plot
 plot(model_final, which=2)
+
 
 ### Constant variance ###
 # The error has a constant variance (homoscedasticity)
